@@ -5,7 +5,7 @@ function App() {
 
   return (
     <>
-      <Board gridSize={5} />
+      <Board rows={3} cols={4} />
     </>
   )
 }
