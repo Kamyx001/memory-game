@@ -1,16 +1,18 @@
 import './Board.css'
 import Card from '../Card/Card'
 import shuffle from '../functions/shuffle'
+import { useState } from 'react'
 
 const Board = ( { rows, cols }: { rows: number, cols: number } ) => {
 
   const cards = Array(rows * cols).fill(0).map((_, index) => Math.ceil((index+1)/2))
-  const isTurned: boolean[] = Array(rows * cols).fill(false)
+  const [isTurned, setIsTurned] = useState<boolean[]>(Array(rows * cols).fill(false));
   const pair: {index: number, key: number}[] = []
   console.log(cards)
   shuffle(cards)
 
   const changeTurned = (index: number) => {
+    const newIsTurned = [...isTurned];
     console.log(index)
     if (isTurned[index] === false) pair.push({index: index, key: cards[index]})
     if (isTurned[index] === true) {
@@ -20,7 +22,8 @@ const Board = ( { rows, cols }: { rows: number, cols: number } ) => {
         }
       }
     }
-    isTurned[index] = !isTurned[index]
+    newIsTurned[index] = !newIsTurned[index];
+    setIsTurned(newIsTurned);
     checkPair()
     console.log(pair)
     console.log(isTurned)
@@ -29,14 +32,14 @@ const Board = ( { rows, cols }: { rows: number, cols: number } ) => {
 
   const checkPair = () => {
     if (pair.length === 2) {
-      if(pair[0].key === pair[1].key)
-        console.log('pair')
-      else {
+      const newIsTurned = [...isTurned];
+      if(pair[0].key !== pair[1].key) {
         pair.forEach(({ index }) => {
-          isTurned[index] = false;
-        });      }
+          newIsTurned[index] = false;
+        });
+      }
+      setIsTurned(newIsTurned);
       pair.length = 0;
-      console.log('not pair')
     }
   }
 
