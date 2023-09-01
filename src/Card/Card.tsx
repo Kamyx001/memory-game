@@ -1,19 +1,21 @@
-
-
-
 import React, { useState } from 'react';
 import './Card.css';
 
 interface CardProps {
-  children: React.ReactNode;
+  children: any;
+  index: number;
+  changeTurned: (index: number) => void;
 }
 
-const Card: React.FC<CardProps> = (props) => {
+const Card: React.FC<CardProps> = ({ children, index, changeTurned}) => {
   const [isTurned, setIsTurned] = useState(false);
   return (
-    <div id='card' className={isTurned ? 'turned' : ''} onClick={() => setIsTurned(!isTurned)}>
+    <div id='card' className={isTurned ? 'turned' : ''} onClick={() => {
+      setIsTurned(!isTurned)
+      changeTurned(index)
+    }}>
       <div id='front'></div>
-      <div id='back'>{props.children}</div>
+      <div id='back'>{children}</div>
     </div>
   );
 }
